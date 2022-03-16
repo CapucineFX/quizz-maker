@@ -8,7 +8,7 @@
 Pour éditer ma page [editor on GitHub](https://github.com/CapucineFX/quizz-maker/edit/gh-pages/index.md) 
 
 <h2>Module 1 : Initiation sur HTML / CSS</h2>
-<a href="https://github.com/CapucineFX/quizz-maker/qcm/">Quizz Maker</a>
+<a href="https://github.com/CapucineFX/quizz-maker/blob/main/quizzmaker.html">Quizz Maker</a>
 
 
 <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
