@@ -1,13 +1,13 @@
 <h1>Bienvenue sur ma page personnelle</h1>
 
-<p>Bonjour, je m'appelle Capucine Fauroux et je suis constructeur de communauté. Je donne des cours en HTML CSS et si tu es là c'est pour pouvoir passer ton évalutation ICI.</p>
-<p>N'hésite pas a me suivre sur ma chaine pour mieux me connaitre et me contacter au besoins</p>
+<p>Bonjour, je m'appelle Capucine Fauroux et je suis constructeur de communauté. Je donne des cours en HTML / CSS et si tu es là c'est pour pouvoir passer ton évalutation ICI.</p>
+<p>N'hésite pas a me suivre sur ma chaine pour mieux me connaitre et me contacter par la suite.</p>
 
 
 
-Pour éditer ma page [editor on GitHub](https://github.com/CapucineFX/quizz-maker/edit/gh-pages/index.md) Je n'est cas cliquer sur ce lien.
-ghted code block
+Pour éditer ma page [editor on GitHub](https://github.com/CapucineFX/quizz-maker/edit/gh-pages/index.md) 
 
+<h2>Module 1 : Initiation sur HTML / CSS</h2>
 <a href="capucinefx.github.io/quizz-maker/quizzmaker.html">Quizz</a>
 
 
