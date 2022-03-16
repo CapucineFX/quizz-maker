@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <!-- favicon shaped as a (?) -->
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='white' class='bi bi-question-circle' viewBox='0 0 16 16'%3E%3Cpath d='M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z'/%3E%3Cpath d='M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z'/%3E%3C/svg%3E"
+    />
+
+        <!-- CSS Front Template -->
+        <link rel="stylesheet" href="./assets/css/theme.min.css">
+
+  </head>
+  <style>
+    h2 {
+      width: 100%;
+    padding-right: 15px;
+    padding-left: 150px;
+    margin-right: auto;
+    margin-left: auto;
+}
+    
+  </style>
+  <body>
+
+     <div class="container space-bottom-1">
+      <div id="toutes-les-questions">
+        <div class="space-top-2">
+          <h1 class="question" contenteditable="true">Thème du Quizz</h1>
+
+        </div>
+
+        <div  id="question0" class="space-1">
+
+
+
+          <h3 class="question" contenteditable="true">Tapez votre question</h3>
+  
+          <div  class="answers">
+            <label>
+              <input type="radio" class="answer-a" name="question0" checked />
+              <span contentEditable="true">Réponse A : </span>
+            </label>
+            <br />
+            <label>
+              <input type="radio" class="answer-b" name="question0" />
+              <span contentEditable="true">Réponse B : </span>
+            </label>
+            <br />
+            <label>
+              <input type="radio" class="answer-c" name="question0" />
+              <span contentEditable="true">Réponse C : </span>
+            </label>
+            <br />
+            <label>
+              <input type="radio" class="answer-d" name="question0" />
+              <span contentEditable="true">Réponse D : </span>
+            </label>
+            <br />
+          </div>
+
+          <button type="button" class="btn btn-soft-dark p-2" id="add" onclick="add(this);">+</button>
+          <button type="button" class="btn btn-soft-dark p-2" id="del" onclick="del(this);">-</button>
+          <button type="button" class="btn btn-soft-danger p-2" id="reset" onclick="reset(this);">reset</button>
+        </div>
+      </div>
+   
+        <div class="mb-3" >
+          <button type="button" class="btn btn-danger p-2 mr-4" id="test" onclick="create_test();">Publier le Quizz en HTML</button>
+          <button type="button" class="btn btn-danger p-2" id="check" style="display: none;" onclick="checkResults(this);">
+            Finir le Quizz
+          </button>
+
+        </div>
+        <div> 
+          <button type="button" class="btn btn-soft-danger p-2" id="generate" onclick="print();">Imprimer en PDF</button>
+          <button type="button" class="btn btn-soft-dark p-2" id="generatemail" onclick="generate_pdf();">Generate mail</button></div>
+
+     
+        </div>
+  
+ 
+ 
+    <script>
+      let numquestions = 1;
+      let textFile = null;
+
+      function add(elem) {
+        let q2 = elem.parentNode.cloneNode((deep = true));
+        q2.id = "question" + numquestions++;
+
+        // we need to change the "name" of the radio buttons
+        // so they belong to different groups
+        q2.querySelectorAll("input[type=radio]").forEach((a) => {
+          a.name = q2.id;
+        });
+        let mondiv = document.getElementById("toutes-les-questions");
+        mondiv.appendChild(q2);
+      }
+
+      function del(elem) {
+        // We can't remove all question (at least 1)
+        if (numquestions > 1) {
+          let quest = elem.parentNode;
+          quest.parentNode.removeChild(quest);
+          numquestions--;
+        }
+      }
+
+      function reset(elem) {
+        let quest = elem.parentNode;
+        quest.querySelector("h3").innerText = "Question";
+        quest.querySelectorAll("span").forEach((i) => {
+          i.innerText = "answer";
+        });
+      }
+
+      function generate() {
+        let tab = create_test();
+        tab.close();
+        let page = tab.document.documentElement.innerHTML;
+        let a = document.createElement("a");
+        a.href = makeTextFile(page);
+        a.download = "quizz.html";
+        a.click();
+      }
+
+      function generate_email() {
+        // To create an email with the test (usefull for profs?)
+        let tab = create_test();
+        let b = tab.document.querySelector("#check");
+        tab.document.body.removeChild(b);
+        
+        let page = tab.document.documentElement.innerHTML;
+        page =page.replace(/(\r\n) * <script.*?\/script>(\r\n)*/,"");
+        let a = document.createElement("a");
+        a.href = makeTextFile(
+          "To: prof.de.math@gmail.com\n"
+          +"From: mee@gmail.com\n"
+          +"Subject: Subject\n"
+          +"X-Unsent: 1\n"
+          +"Content-Type: text/html;charset=UTF-8;\n"
+          +"<html>\n"
+          + page
+          +"\n</html>\n"
+        );
+        a.download = "message.eml";
+        a.click();
+      }
+
+      function create_test() {
+        // Get the good answers (the one selected
+        // when pressing the generate button)
+        let answers = "";
+        document.querySelectorAll("input[type=radio]:checked").forEach((i) => {
+          answers += i.className + ":"; // example: 'answer-a'+':'
+        });
+
+        console.log(answers);
+        // we store the solution to the quizz has a data-soluce 
+        // attribute but converted to base64 encoding to prevent 
+        // cheating (still quite easy to cheat though ! )
+        document.querySelector("#check").dataset.soluce = btoa(answers);
+
+        // Create a new window/tab copied form this one
+        var w = window.open("", "_blank");
+        let doc = w.document;
+        doc.write("<!DOCTYPE html>");
+        doc.write("<html>");
+        doc.write("<head>");
+        doc.write(document.head.innerHTML);
+        doc.write("</head>");
+        doc.write("<body>");
+        doc.write(document.body.innerHTML);
+        doc.write("</body>");
+        doc.write("</html>");
+        
+
+        // remove the possibility to modify
+        w.document.querySelectorAll("*[contentEditable=true]").forEach((e) => {
+          e.contentEditable = false;
+        });
+
+        // remove +/- buttons
+        w.document.querySelectorAll("button").forEach((e) => {
+          if (e.id != "check") {
+            e.parentNode.removeChild(e);
+          }
+        });
+
+        // we make the check result button appear
+        let b = w.document.querySelector("#check");
+        console.log(b);
+        if( b!= null){
+          b.style.display = "block";
+        }
+        doc.close();
+        return w;
+      }
+
+      function checkResults(elem) {
+        // Get the user answers
+        let nbgood = 0;
+
+        // we retrieve the solution from the data-soluce
+        let answers = elem.dataset.soluce;
+        // and convert it to an array
+        answers = atob(answers).split(":");
+
+        // we count the good answers and color the bad ones red
+        document
+          .querySelectorAll("input[type=radio]:checked")
+          .forEach((e, index) => {
+            if (e.className == answers[index]) {
+              nbgood++;
+            } else {
+              e.parentNode.style.color = "red";
+            }
+          });
+
+        elem.parentElement.removeChild(elem);
+        let result = document.createElement("h2");
+        let tot = answers.length - 1;
+
+        result.innerText = "You have " + nbgood + " good answer on " + tot;
+
+        if (nbgood == tot) {
+          result.innerText = "Bravo !! " + result.innerText; 
+        }
+        document.body.appendChild(result);
+      }
+
+      function makeTextFile(text) {
+        var data = new Blob([text], { type: "text/plain" });
+        if (textFile !== null) {
+          window.URL.revokeObjectURL(textFile);
+        }
+        textFile = window.URL.createObjectURL(data);
+        return textFile;
+      }
+    </script>
+      
+  </body>
+</html>
