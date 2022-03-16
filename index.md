@@ -8,7 +8,7 @@
 Pour éditer ma page [editor on GitHub](https://github.com/CapucineFX/quizz-maker/edit/gh-pages/index.md) 
 
 <h2>Module 1 : Initiation sur HTML / CSS</h2>
-<a href="./quizzmaker.html">Quizz</a>
+<a href="/quizzmaker.html">Quizz</a>
 
 
 Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
